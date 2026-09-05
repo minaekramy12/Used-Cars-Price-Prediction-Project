@@ -21,7 +21,7 @@ The target variable (`price`) is modeled using a log transformation (`np.log1p`)
 ## 📂 Project Structure
 
 ```
-Used-Car-Price-Prediction/
+Used-Car-Price-Prediction-Project/
 │
 ├── data/
 │   ├── raw_data.csv
@@ -112,9 +112,9 @@ An interactive interface allows users to select vehicle specifications and recei
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/minaekramy12/Used-Car-Price-Prediction.git
+   git clone https://github.com/minaekramy12/Used-Car-Price-Prediction-Project.git
    
-   cd Used-Car-Price-Prediction
+   cd Used-Car-Price-Prediction-Project
    ```
 
 2. Install dependencies:
