@@ -34,7 +34,8 @@ Used-Car-Price-Prediction/
 │   └── 04_machine_learning.ipynb
 │
 ├── models/
-│   └── xgboost_pipeline.joblib
+│   └── xgb_pipeline.joblib
+│   └── car_price_model.pkl
 │
 ├── app.py
 ├── requirements.txt
