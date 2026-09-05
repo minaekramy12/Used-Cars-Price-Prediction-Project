@@ -1,22 +1,20 @@
-# 🚗 Used Car Price Prediction
+# 🚗 Used Car Price Prediction & Interactive Web App
 
-An end-to-end Machine Learning project for predicting used car prices based on vehicle specifications. The project covers the complete data science workflow, from data cleaning and exploratory data analysis to feature engineering, hypothesis testing and model development.
+<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTs2NHHCAHw0gl8eIkoHcIrbndZOGKP5nQzNQWGNMbaABBkqjM0TfV8AvA&s=10' width=1000 />
+
+
+An end-to-end Machine Learning project for predicting used car prices using an optimized **XGBoost Pipeline** and an interactive **Streamlit** web application. This repository covers the complete data science workflow, including data cleaning, exploratory data analysis, hypothesis testing, pipeline feature engineering, model optimization, and deployment.
 
 ---
 
 ## 📌 Project Overview
 
-The objective of this project is to build a machine learning model capable of estimating the price of a used car using its specifications such as:
+The objective of this project is to estimate the market price of a used car based on key physical, mechanical, and historical attributes:
 
-- Brand
-- Mileage
-- Fuel Type
-- Transmission
-- Accident History
-- Horsepower
-- Engine Size
-- Number of Cylinders
-- Vehicle Age
+- **Categorical Features:** `brand`, `fuel_type`, `transmission`, `accident`
+- **Numerical Features:** `milage`, `HP`, `engine_size`, `n_cylinders`, `age`
+
+The target variable (`price`) is modeled using a log transformation (`np.log1p`) during training to handle skewness and reversed (`np.expm1`) during inference.
 
 ---
 
@@ -36,113 +34,107 @@ Used-Car-Price-Prediction/
 │   └── 04_machine_learning.ipynb
 │
 ├── models/
-│   └── car_price_model.pkl
+│   └── xgboost_pipeline.joblib
 │
-│
+├── app.py
 ├── requirements.txt
 └── README.md
+
 ```
 
----
-
-## 🛠 Technologies
-
-- Python
-- Pandas
-- NumPy
-- Scipy
-- Matplotlib
-- Scikit-learn
-- Joblib
 
 ---
 
-## 📊 Data Cleaning
 
-Performed several preprocessing steps including:
+## 🛠 Technologies & Tools
 
-- Handling missing values
-- Removing duplicates
-- Standardizing categorical values
-- Extracting:
-  - Horsepower (HP)
-  - Engine Size
-  - Number of Cylinders
-- Creating a new **Age** feature
-- Preparing a clean dataset for modeling
+- **Programming:** Python
+- **Data Manipulation & Analysis:** Pandas, NumPy, SciPy
+- **Data Visualization:** Matplotlib, Seaborn
+- **Machine Learning:** XGBoost, Scikit-learn
+- **Model Deployment & Web Interface:** Streamlit
+- **Model Serialization:** Joblib
 
 ---
 
-## 📈 Exploratory Data Analysis
+## 📊 Data Cleaning & Preprocessing
 
-Performed both univariate and bivariate analysis.
-
-Some key findings include:
-
-- Vehicle price decreases as mileage increases.
-- Higher horsepower generally leads to higher prices.
-- Accident history significantly affects vehicle prices.
-- Gasoline is the dominant fuel type.
-- Automatic transmission is the most common transmission type.
+- Handled missing categorical values (e.g., imputing missing `fuel_type` values with `'Unknown'`).
+- Removed duplicated records and formatted noisy text attributes.
+- Parsed and extracted clean numerical values for `HP`, `engine_size`, and `n_cylinders`.
+- Derived the `age` feature directly from vehicle manufacturing years (`2026 - model_year`).
 
 ---
 
-## 📑 Hypothesis Testing
+## 📈 Exploratory Data Analysis & Hypothesis Testing
 
-Statistical tests were performed to validate insights.
+Key findings confirmed across EDA and statistical validation:
 
-- Independent Two-Sample t-test
-- One-Way ANOVA
-- Pearson Correlation
-
----
-
-## ⚙️ Feature Engineering
-
-Applied several feature engineering techniques:
-
-- Log Transformation of the target variable
-- Feature Extraction
-- Age Calculation
-- Missing Value Imputation
-- One-Hot Encoding
-- Standard Scaling
-- ColumnTransformer
-- Scikit-learn Pipeline
+- **Mileage vs. Price:** Strong negative correlation; price depreciates non-linearly with increased mileage.
+- **Engine Metrics:** `HP` and `engine_size` exhibit strong positive linear correlations with price.
+- **Accident History:** Independent t-tests confirmed a statistically significant drop in market value for cars with reported accidents or damage.
+- **ANOVA Testing:** Demonstrated significant variance in pricing across distinct `brand` categories and `fuel_type` variants.
 
 ---
 
-## 🤖 Machine Learning Models
+## ⚙️ Pipeline & Feature Engineering
 
-The following models were evaluated:
+All preprocessing steps are encapsulated within a Scikit-Learn `Pipeline` and `ColumnTransformer` to eliminate data leakage:
 
-| Model | Test R² | Cross Validation |
-|--------|---------:|----------------:|
-| Linear Regression | 76.7% | 82.0% |
-| Polynomial Regression | 79.4% | 83.4% |
-| Decision Tree | 74.3% | 76.1% |
-| **Random Forest** ⭐ | **82.2%** | **86.0%** |
-
-Random Forest achieved the best overall performance and was selected as the final model.
+- **Target Transformation:** Applied `np.log1p(y)` prior to training to normalize target distribution.
+- **Categorical Encoding:** One-Hot Encoding for `brand`, `fuel_type`, `transmission`, and `accident`.
+- **Numerical Scaling:** Standard scaling applied to numerical inputs where applicable.
+- **Dynamic Age Calculation:** Streamlit interface automatically derives `age` from user-selected `model_year`.
 
 ---
 
-## 🚀 Future Improvements
+## 🤖 Machine Learning Models & Results
 
-- Experiment with XGBoost and CatBoost.
-- Add advanced feature engineering.
-- Improve prediction performance for luxury vehicles.
-- Deploy the model using Streamlit.
+Multiple algorithms were evaluated prior to hyperparameter tuning and final selection:
+
+| Model | Test R² |
+| :--- | :---: |
+| Linear Regression | 76.7% |
+| Decision Tree | 74.3% |
+| Random Forest | 82.2% |
+| **XGBoost Pipeline** ⭐ | **84.9%** |
+
+**XGBoost** combined with the feature preprocessing pipeline achieved the highest generalization score and was selected for production deployment.
 
 ---
+
+## 💻 Web Application (Streamlit)
+
+An interactive interface allows users to select vehicle specifications and receive real-time price predictions.
+
+### Running the App Locally
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/minaekramy12/Used-Car-Price-Prediction.git
+   
+   cd Used-Car-Price-Prediction
+   ```
+
+2. Install dependencies:
+   ```bash
+    pip install -r requirements.txt
+   ```
+
+3. Launch Streamlit:
+   ```bash
+    streamlit run app.py
+   ```
+
+
+---
+
 
 ## 👨‍💻 Author
+Mina Ekramy
 
-**Mina Ekramy**
+Computer Engineering Student, Cairo University
 
-Computer Engineering Student  
-Cairo University
+GitHub: [minaekramy12](https://github.com/minaekramy12/)
 
-GitHub: https://github.com/minaekramy12
-
-LinkedIn: https://linkedin.com/in/minaekramy
+LinkedIn: [minaekramy](https://www.linkedin.com/in/minaekramy/)
